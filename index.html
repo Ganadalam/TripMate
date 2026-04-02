@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta name="description" content="TripMate — AI 여행 루트 큐레이션 · 사진 · 모임 플랫폼"/>
+  <meta property="og:title" content="TripMate — 여행을 설계하다"/>
+  <title>TripMate — 여행을 설계하다</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/main.css"/>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"><div class="cursor-inner"></div></div>
+
+<!-- PRELOADER -->
+<div class="preloader" id="preloader">
+  <div class="pl-logo">
+    <svg viewBox="0 0 80 80" fill="none">
+      <path d="M40 10 L64 56 L16 56 Z" stroke="var(--g400)" stroke-width="1.2" fill="none"/>
+      <circle cx="40" cy="38" r="4" fill="var(--g400)"/>
+      <circle cx="40" cy="40" r="28" stroke="var(--g400)" stroke-width="0.4" stroke-dasharray="3 5" opacity="0.3">
+        <animateTransform attributeName="transform" type="rotate" from="0 40 40" to="360 40 40" dur="8s" repeatCount="indefinite"/>
+      </circle>
+    </svg>
+    <span>TripMate</span>
+  </div>
+  <div class="pl-bar"><div class="pl-fill" id="plFill"></div></div>
+  <p class="pl-msg" id="plMsg">여행 데이터를 불러오는 중...</p>
+</div>
+
+<!-- PREMIUM GATE -->
+<div class="gate" id="premiumGate">
+  <div class="gate-box">
+    <button class="gate-close" id="gateClose">✕</button>
+    <div class="gate-shine"></div>
+    <div class="gate-badge">✦ PREMIUM</div>
+    <h2 class="gate-title">무제한 여행을<br/><em>설계하세요</em></h2>
+    <p class="gate-desc">AI 루트 무제한 · 블로그 자동 파싱 · 고해상도 사진 · 광고 없음</p>
+    <div class="gate-plans">
+      <div class="gate-plan" data-plan="monthly">
+        <span class="gp-label">월간</span>
+        <span class="gp-price">₩4,900<small>/월</small></span>
+      </div>
+      <div class="gate-plan featured selected" data-plan="yearly">
+        <span class="gp-deal">62% 할인</span>
+        <span class="gp-label">연간</span>
+        <span class="gp-price">₩1,900<small>/월</small></span>
+        <span class="gp-orig">₩58,800/년</span>
+      </div>
+    </div>
+    <button class="gate-cta" id="gateActivate">7일 무료 시작 →</button>
+    <p class="gate-fine">언제든 해지 가능 · 카드 불필요</p>
+    <div class="gate-perks">
+      <span>✓ AI 루트 무제한</span><span>✓ 블로그 파싱</span>
+      <span>✓ 고해상도 사진</span><span>✓ 광고 없음</span>
+      <span>✓ 우선 지원</span><span>✓ 모임 무제한 생성</span>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header" id="header">
+  <div class="hdr">
+    <a href="#" class="logo" data-page="home">
+      <svg class="logo-gem" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L18 8L12 22L6 8Z" stroke="currentColor" stroke-width="1.3" fill="none"/>
+        <path d="M6 8h12" stroke="currentColor" stroke-width="1.3"/>
+      </svg>
+      <span>TripMate</span>
+    </a>
+    <nav class="nav">
+      <a class="nl active" data-page="home" href="#">Explore</a>
+      <a class="nl" data-page="events" href="#">행사&amp;축제</a>
+      <a class="nl" data-page="meetup" href="#">모임
+        <span class="nl-new">NEW</span>
+      </a>
+      <a class="nl" data-page="community" href="#">커뮤니티</a>
+      <a class="nl" data-page="favorites" href="#">저장됨
+        <span class="nl-cnt" id="favBadge">0</span>
+      </a>
+    </nav>
+    <div class="hdr-right">
+      <button class="premium-pill" id="premiumBtn">✦ Premium</button>
+      <button class="icon-btn" id="themeBtn">
+        <svg class="i-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <svg class="i-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      </button>
+      <button class="hamburger" id="hamburger"><span/><span/></button>
+    </div>
+  </div>
+  <div class="mobile-nav" id="mobileNav">
+    <a class="mn-link" data-page="home" href="#">Explore</a>
+    <a class="mn-link" data-page="events" href="#">행사&amp;축제</a>
+    <a class="mn-link" data-page="meetup" href="#">모임</a>
+    <a class="mn-link" data-page="community" href="#">커뮤니티</a>
+    <a class="mn-link" data-page="favorites" href="#">저장됨</a>
+    <button class="mn-premium" id="mnPremium">✦ Premium 시작하기</button>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ══ PAGE: HOME (EXPLORE) ══ -->
+<section class="page active" id="page-home">
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-noise"></div>
+    <div class="container hero-body">
+      <div class="hero-kicker" data-reveal>
+        <span class="kicker-dot"></span>AI-Powered · 10개 지역 · 실사 사진
+      </div>
+      <h1 class="hero-h1" data-reveal data-delay="80">
+        <span>여행을</span><em>설계하다</em>
+      </h1>
+      <p class="hero-sub" data-reveal data-delay="160">목적지와 취향을 선택하면 AI가 사진과 함께 완벽한 루트를 큐레이션합니다</p>
+
+      <!-- SEARCH -->
+      <div class="sw" id="sw" data-reveal data-delay="240">
+        <div class="sw-row">
+          <div class="sw-field">
+            <span class="sw-lbl">📍 지역</span>
+            <select class="sw-sel" id="regionSel">
+              <option value="">어디로 가시나요?</option>
+              <optgroup label="수도권"><option value="서울">서울</option><option value="수원">수원</option><option value="인천">인천</option></optgroup>
+              <optgroup label="강원"><option value="강릉">강릉</option><option value="속초">속초</option></optgroup>
+              <optgroup label="충청·전라"><option value="전주">전주</option><option value="여수">여수</option></optgroup>
+              <optgroup label="경상"><option value="부산">부산</option><option value="경주">경주</option></optgroup>
+              <optgroup label="제주"><option value="제주">제주</option></optgroup>
+            </select>
+          </div>
+          <div class="sw-div"></div>
+          <div class="sw-field">
+            <span class="sw-lbl">🎯 테마</span>
+            <select class="sw-sel" id="themeSel">
+              <option value="">어떤 여행을?</option>
+              <option value="먹방">🍜 먹방</option><option value="힐링">🌿 힐링</option>
+              <option value="문화">🏛️ 문화</option><option value="액티비티">🏄 액티비티</option>
+              <option value="카페투어">☕ 카페투어</option><option value="쇼핑">🛍️ 쇼핑</option>
+              <option value="야경">🌙 야경</option><option value="자연">🏔️ 자연</option>
+            </select>
+          </div>
+          <button class="sw-btn" id="searchBtn">
+            <span>루트 탐색</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+        <div class="sw-chips" id="swChips">
+          <span class="chips-label">인기</span>
+          <button class="chip" data-r="서울" data-t="카페투어">서울 카페 ☕</button>
+          <button class="chip" data-r="부산" data-t="먹방">부산 먹방 🍜</button>
+          <button class="chip" data-r="제주" data-t="자연">제주 자연 🏔️</button>
+          <button class="chip" data-r="경주" data-t="문화">경주 문화 🏛️</button>
+          <button class="chip" data-r="여수" data-t="야경">여수 야경 🌙</button>
+        </div>
+
+        <!-- BLOG IMPORT -->
+        <div class="blog-import">
+          <div class="bi-inner" id="biInner">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+            <input class="bi-input" id="blogUrl" type="url" placeholder="블로그·여행 기사 URL → AI가 루트+사진으로 자동 변환"/>
+            <span class="bi-premium-tag" id="biPremiumTag">✦ Premium</span>
+            <button class="bi-btn" id="biBtn">
+              <span id="biBtnTxt">변환</span>
+              <div class="bi-spin" id="biSpin" style="display:none"></div>
+            </button>
+          </div>
+          <div class="bi-result" id="biResult" style="display:none"></div>
+        </div>
+
+        <!-- MANUAL ROUTE REGISTER -->
+        <div class="manual-register" id="manualRegister" style="display:none">
+          <button class="mr-toggle" id="mrToggle">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            직접 루트 등록
+          </button>
+        </div>
+      </div>
+
+      <div class="hero-metrics" data-reveal data-delay="320">
+        <div class="metric"><strong data-count="2847">0</strong><span>큐레이션 루트</span></div>
+        <div class="ms"></div>
+        <div class="metric"><strong data-count="10">0</strong><span>여행 지역</span></div>
+        <div class="ms"></div>
+        <div class="metric"><strong data-count="38400">0</strong><span>여행 메이트</span></div>
+        <div class="ms"></div>
+        <div class="metric"><strong data-count="97">0</strong><span>% 만족도</span></div>
+      </div>
+    </div>
+    <div class="scroll-hint"><div class="sh-line"></div></div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results" id="resultsWrap" style="display:none">
+    <div class="container">
+      <div class="results-hdr">
+        <div>
+          <p class="results-eye" id="resultsEye">추천 결과</p>
+          <h2 class="results-ttl" id="resultsTtl">루트를 설계하는 중...</h2>
+        </div>
+        <div class="results-actions">
+          <div class="vt-group">
+            <button class="vt active" data-view="grid" title="그리드"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></button>
+            <button class="vt" data-view="list" title="리스트"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+          </div>
+          <button class="btn-ghost-s" id="registerRouteBtn">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>루트 등록
+          </button>
+          <button class="btn-ghost-s" id="shareResultsBtn">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51L8.59 10.49"/></svg>공유
+          </button>
+        </div>
+      </div>
+      <div class="spin-wrap" id="routeSpin" style="display:none">
+        <div class="spin-ring"></div><p>AI가 루트와 사진을 큐레이션하는 중...</p>
+      </div>
+      <div class="route-grid" id="routeGrid" data-view="grid"></div>
+      <div class="empty" id="routeEmpty" style="display:none">
+        <div class="empty-ico">🗺️</div><h3>루트를 찾을 수 없어요</h3><p>다른 지역이나 테마를 선택해보세요</p>
+      </div>
+      <div class="premium-cta-block" id="premiumCta" style="display:none">
+        <p class="pcb-badge">✦ PREMIUM</p>
+        <h3>더 많은 루트를 원하세요?</h3>
+        <p>프리미엄으로 AI 추천 루트를 무제한 탐색하세요</p>
+        <button class="pcb-btn" id="pcbBtn">무료로 시작하기 →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PAGE: EVENTS ══ -->
+<section class="page" id="page-events">
+  <div class="page-mast">
+    <div class="container">
+      <span class="eyebrow">Happening Now</span>
+      <h1>행사 <span class="accent">&amp;</span> 축제</h1>
+      <p>전국에서 지금 열리는 행사와 축제</p>
+    </div>
+  </div>
+  <div class="container sec-body">
+    <div class="filter-bar">
+      <div class="fb-field"><label>시작일</label><input type="date" class="fb-inp" id="evFrom"/></div>
+      <span class="fb-arr">→</span>
+      <div class="fb-field"><label>종료일</label><input type="date" class="fb-inp" id="evTo"/></div>
+      <div class="fb-field"><label>카테고리</label>
+        <select class="fb-inp" id="evCat">
+          <option value="">전체</option><option value="문화">문화</option>
+          <option value="음식">음식</option><option value="축제">축제</option><option value="자연">자연</option>
+        </select>
+      </div>
+      <button class="btn-primary-s" id="evFilter">적용</button>
+    </div>
+    <div class="spin-wrap" id="evSpin" style="display:none"><div class="spin-ring"></div><p>불러오는 중...</p></div>
+    <div class="event-grid" id="eventGrid"></div>
+  </div>
+</section>
+
+<!-- ══ PAGE: MEETUP (모임) ══ -->
+<section class="page" id="page-meetup">
+  <div class="page-mast">
+    <div class="container">
+      <span class="eyebrow">Community Meetup</span>
+      <h1>모임 <span class="accent">찾기</span></h1>
+      <p>밥친구·여행메이트·동호회를 연결합니다</p>
+    </div>
+  </div>
+  <div class="container sec-body">
+    <!-- MEETUP TABS -->
+    <div class="meetup-tabs">
+      <button class="meetup-tab active" data-mt="all">전체</button>
+      <button class="meetup-tab" data-mt="meal">🍽️ 밥친구</button>
+      <button class="meetup-tab" data-mt="travel">✈️ 여행메이트</button>
+      <button class="meetup-tab" data-mt="hobby">🎯 동호회</button>
+      <button class="meetup-tab" data-mt="cafe">☕ 카페·스터디</button>
+    </div>
+    <!-- MEETUP CREATE -->
+    <div class="meetup-create-bar">
+      <button class="mcb-btn" id="createMeetupBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        모임 만들기
+      </button>
+      <div class="meetup-filters">
+        <select class="fb-inp" id="meetupRegionFilter" style="min-width:100px">
+          <option value="">전 지역</option>
+          <option value="서울">서울</option><option value="부산">부산</option>
+          <option value="제주">제주</option><option value="기타">기타</option>
+        </select>
+        <select class="fb-inp" id="meetupSortFilter" style="min-width:100px">
+          <option value="latest">최신순</option>
+          <option value="popular">인기순</option>
+          <option value="deadline">마감 임박</option>
+        </select>
+      </div>
+    </div>
+    <!-- MEETUP FORM (hidden) -->
+    <div class="meetup-form-wrap" id="meetupFormWrap" style="display:none">
+      <div class="meetup-form">
+        <div class="mf-header">
+          <h3>모임 만들기</h3>
+          <button class="mf-close" id="meetupFormClose">✕</button>
+        </div>
+        <div class="mf-body">
+          <div class="mf-row">
+            <div class="fld"><label>모임 유형 <span class="req">*</span></label>
+              <select class="fld-inp" id="mfType">
+                <option value="meal">🍽️ 밥친구</option>
+                <option value="travel">✈️ 여행메이트</option>
+                <option value="hobby">🎯 동호회/취미</option>
+                <option value="cafe">☕ 카페·스터디</option>
+              </select>
+            </div>
+            <div class="fld"><label>제목 <span class="req">*</span></label>
+              <input type="text" class="fld-inp" id="mfTitle" placeholder="ex. 홍대 맛집 탐방 같이 가요" maxlength="40"/>
+            </div>
+            <div class="fld"><label>지역 <span class="req">*</span></label>
+              <select class="fld-inp" id="mfRegion">
+                <option value="서울">서울</option><option value="부산">부산</option>
+                <option value="제주">제주</option><option value="경주">경주</option>
+                <option value="강릉">강릉</option><option value="전주">전주</option>
+                <option value="여수">여수</option><option value="속초">속초</option>
+                <option value="수원">수원</option><option value="인천">인천</option>
+                <option value="기타">기타</option>
+              </select>
+            </div>
+          </div>
+          <div class="mf-row">
+            <div class="fld"><label>닉네임 <span class="req">*</span></label>
+              <input type="text" class="fld-inp" id="mfNick" placeholder="닉네임" maxlength="12"/>
+            </div>
+            <div class="fld"><label>날짜</label>
+              <input type="date" class="fld-inp" id="mfDate"/>
+            </div>
+            <div class="fld"><label>모집 인원</label>
+              <select class="fld-inp" id="mfCount">
+                <option value="1">1명 추가</option><option value="2">2명 추가</option>
+                <option value="3">3명 추가</option><option value="5">5명 추가</option>
+                <option value="10">10명 이하</option><option value="0">제한 없음</option>
+              </select>
+            </div>
+          </div>
+          <div class="fld">
+            <label>내용 <span class="req">*</span></label>
+            <textarea class="fld-ta" id="mfContent" placeholder="모임 소개, 원하는 메이트 스타일, 연락 방법 등을 자유롭게 적어주세요." maxlength="400"></textarea>
+            <div class="fld-foot"><span class="char-cnt"><span id="mfLen">0</span>/400</span></div>
+          </div>
+          <div class="fld">
+            <label>관련 여행 루트 (선택)</label>
+            <input type="text" class="fld-inp" id="mfRoute" placeholder="ex. 서울 카페투어 루트" maxlength="30"/>
+          </div>
+          <button class="btn-primary-s" id="mfSubmit" style="width:100%;justify-content:center">모임 게시하기</button>
+        </div>
+      </div>
+    </div>
+    <div class="meetup-grid" id="meetupGrid"></div>
+  </div>
+</section>
+
+<!-- ══ PAGE: COMMUNITY (게시판) ══ -->
+<section class="page" id="page-community">
+  <div class="page-mast">
+    <div class="container">
+      <span class="eyebrow">Community Board</span>
+      <h1>여행 <span class="accent">커뮤니티</span></h1>
+      <p>루트 공유, 사진, 후기, 자유 게시판</p>
+    </div>
+  </div>
+  <div class="container sec-body">
+    <div class="board-tabs">
+      <button class="board-tab active" data-bt="all">전체</button>
+      <button class="board-tab" data-bt="route">루트 공유</button>
+      <button class="board-tab" data-bt="review">후기</button>
+      <button class="board-tab" data-bt="photo">사진</button>
+      <button class="board-tab" data-bt="free">자유</button>
+    </div>
+    <div class="board-write-card">
+      <div class="bwc-head">
+        <h3>글 작성</h3><span class="bwc-sub">사진과 링크를 포함해 자유롭게 공유하세요</span>
+      </div>
+      <div class="bwc-body">
+        <div class="bwc-row">
+          <div class="fld"><label>닉네임 <span class="req">*</span></label>
+            <input type="text" class="fld-inp" id="bNick" placeholder="닉네임" maxlength="12"/>
+          </div>
+          <div class="fld"><label>카테고리</label>
+            <select class="fld-inp" id="bCat">
+              <option value="route">루트 공유</option><option value="review">후기</option>
+              <option value="photo">사진</option><option value="free">자유</option>
+            </select>
+          </div>
+          <div class="fld"><label>제목 <span class="req">*</span></label>
+            <input type="text" class="fld-inp" id="bTitle" placeholder="제목을 입력하세요" maxlength="40"/>
+          </div>
+        </div>
+        <div class="fld">
+          <label>내용 <span class="req">*</span></label>
+          <textarea class="fld-ta" id="bContent" placeholder="여행 경험, 루트, 사진 등을 자유롭게 공유해보세요!" maxlength="1000"></textarea>
+          <div class="fld-foot"><span class="char-cnt"><span id="bLen">0</span>/1000</span></div>
+        </div>
+        <div class="fld">
+          <label>링크 (블로그·유튜브·인스타 등)</label>
+          <input type="url" class="fld-inp" id="bLink" placeholder="https://..."/>
+        </div>
+        <div class="fld">
+          <label>사진 첨부 <span style="font-size:10px;color:var(--tx-3)">(최대 4장 · 직접 업로드 또는 URL)</span></label>
+          <div class="photo-upload" id="photoUpload">
+            <input type="file" id="photoFileInput" accept="image/*" multiple style="display:none"/>
+            <div class="pu-slots">
+              <div class="pu-slot" data-slot="0">
+                <span class="pu-plus">+</span>
+                <img class="pu-preview" style="display:none"/>
+                <button class="pu-remove" style="display:none">✕</button>
+              </div>
+              <div class="pu-slot" data-slot="1"><span class="pu-plus">+</span><img class="pu-preview" style="display:none"/><button class="pu-remove" style="display:none">✕</button></div>
+              <div class="pu-slot" data-slot="2"><span class="pu-plus">+</span><img class="pu-preview" style="display:none"/><button class="pu-remove" style="display:none">✕</button></div>
+              <div class="pu-slot" data-slot="3"><span class="pu-plus">+</span><img class="pu-preview" style="display:none"/><button class="pu-remove" style="display:none">✕</button></div>
+            </div>
+            <div class="pu-or">또는</div>
+            <input type="url" class="fld-inp" id="bPhotoUrl" placeholder="이미지 URL 입력"/>
+          </div>
+        </div>
+        <div class="bwc-foot">
+          <button class="btn-primary-s" id="bSubmit">게시하기</button>
+        </div>
+      </div>
+    </div>
+    <div class="board-list" id="boardList"></div>
+  </div>
+</section>
+
+<!-- ══ PAGE: FAVORITES ══ -->
+<section class="page" id="page-favorites">
+  <div class="page-mast">
+    <div class="container">
+      <span class="eyebrow">My Collection</span>
+      <h1>저장된 <span class="accent">루트</span></h1>
+      <p>내가 저장한 루트를 관리하세요</p>
+    </div>
+  </div>
+  <div class="container sec-body">
+    <!-- FAV TOOLBAR -->
+    <div class="fav-toolbar">
+      <div class="fav-search-wrap">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" class="fav-search" id="favSearch" placeholder="루트 이름, 지역, 테마로 검색..."/>
+      </div>
+      <div class="fav-filters">
+        <select class="fb-inp fav-filter" id="favRegionFilter">
+          <option value="">전 지역</option>
+          <option value="서울">서울</option><option value="부산">부산</option>
+          <option value="제주">제주</option><option value="경주">경주</option>
+          <option value="강릉">강릉</option><option value="전주">전주</option>
+          <option value="여수">여수</option><option value="속초">속초</option>
+          <option value="수원">수원</option><option value="인천">인천</option>
+        </select>
+        <select class="fb-inp fav-filter" id="favThemeFilter">
+          <option value="">전 테마</option>
+          <option value="먹방">먹방</option><option value="힐링">힐링</option>
+          <option value="문화">문화</option><option value="카페투어">카페투어</option>
+          <option value="야경">야경</option><option value="자연">자연</option>
+        </select>
+        <select class="fb-inp fav-filter" id="favSortFilter">
+          <option value="savedAt">저장 순</option>
+          <option value="title">이름 순</option>
+          <option value="region">지역 순</option>
+          <option value="rating">별점 순</option>
+        </select>
+      </div>
+      <div class="fav-toolbar-right">
+        <span class="fav-count-lbl" id="favCountLbl">0개의 루트</span>
+        <button class="btn-ghost-s" id="clearFavBtn">전체 삭제</button>
+      </div>
+    </div>
+    <!-- FAV TAGS -->
+    <div class="fav-tag-bar" id="favTagBar"></div>
+    <div class="route-grid" id="favGrid" data-view="grid"></div>
+    <div class="empty" id="favEmpty" style="display:none">
+      <div class="empty-ico">🤍</div><h3>저장된 루트가 없어요</h3>
+      <p>루트 카드의 하트 버튼을 눌러 저장해보세요</p>
+      <button class="btn-primary-s" data-page="home">루트 탐색하기</button>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ══ MODAL: ROUTE DETAIL (5 TABS) ══ -->
+<div class="modal-layer" id="routeModal">
+  <div class="modal-box">
+    <button class="modal-x" id="modalClose">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="modal-tabs" id="modalTabs">
+      <button class="mt active" data-tab="info">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>루트
+      </button>
+      <button class="mt" data-tab="photos">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>사진
+      </button>
+      <button class="mt" data-tab="map">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>지도
+      </button>
+      <button class="mt" data-tab="reviews">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>리뷰
+      </button>
+      <button class="mt" data-tab="share">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51L8.59 10.49"/></svg>공유
+      </button>
+    </div>
+    <div class="modal-panels">
+      <div class="mp active" id="tab-info"><div class="mp-scroll" id="infoScroll"></div></div>
+      <div class="mp" id="tab-photos"><div class="mp-scroll" id="photosPanel"></div></div>
+      <div class="mp" id="tab-map">
+        <div class="map-layout"><div id="kakaoMap"></div><div class="map-sidebar" id="mapSidebar"></div></div>
+      </div>
+      <div class="mp" id="tab-reviews"><div class="mp-scroll" id="reviewPanel"></div></div>
+      <div class="mp" id="tab-share"><div class="mp-scroll" id="sharePanel"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ROUTE REGISTER MODAL -->
+<div class="modal-layer" id="registerModal">
+  <div class="modal-box modal-box-sm">
+    <button class="modal-x" id="registerModalClose">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="mp-scroll" style="padding:28px">
+      <h3 style="font-family:var(--f-display);font-size:22px;font-weight:700;margin-bottom:20px">루트 직접 등록</h3>
+      <div class="fld"><label>루트 제목 <span class="req">*</span></label>
+        <input type="text" class="fld-inp" id="regTitle" placeholder="ex. 서울 감성 카페투어" maxlength="40"/>
+      </div>
+      <div class="mf-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+        <div class="fld"><label>지역</label>
+          <select class="fld-inp" id="regRegion">
+            <option value="서울">서울</option><option value="부산">부산</option>
+            <option value="제주">제주</option><option value="경주">경주</option>
+            <option value="강릉">강릉</option><option value="전주">전주</option>
+            <option value="여수">여수</option><option value="속초">속초</option>
+            <option value="수원">수원</option><option value="인천">인천</option>
+            <option value="사용자 등록">기타</option>
+          </select>
+        </div>
+        <div class="fld"><label>테마</label>
+          <select class="fld-inp" id="regTheme">
+            <option value="먹방">먹방</option><option value="힐링">힐링</option>
+            <option value="문화">문화</option><option value="카페투어">카페투어</option>
+            <option value="야경">야경</option><option value="자연">자연</option>
+            <option value="커스텀">커스텀</option>
+          </select>
+        </div>
+      </div>
+      <div class="fld" style="margin-top:12px">
+        <label>대표 이미지 URL (선택)</label>
+        <input type="url" class="fld-inp" id="regCoverUrl" placeholder="https://images.unsplash.com/..."/>
+      </div>
+      <div class="fld" style="margin-top:12px">
+        <label>장소 목록 <span class="req">*</span> <span style="font-size:10px;color:var(--tx-3)">(줄바꿈으로 구분, 최대 8개)</span></label>
+        <textarea class="fld-ta" id="regPlaces" placeholder="광장시장&#10;을지면옥&#10;진진&#10;용금옥&#10;필동면옥" style="min-height:140px"></textarea>
+      </div>
+      <div class="fld" style="margin-top:12px">
+        <label>소개 (선택)</label>
+        <textarea class="fld-ta" id="regDesc" placeholder="이 루트에 대한 소개를 자유롭게 적어주세요." style="min-height:80px" maxlength="300"></textarea>
+      </div>
+      <button class="btn-primary-s" id="regSubmit" style="width:100%;justify-content:center;margin-top:16px">루트 등록하기</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-dock" id="toastDock"></div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="js/config.local.js"></script>
+<script src="js/config.js"></script>
+<script src="js/data.js"></script>
+<script src="js/images.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/parser.js"></script>
+<script src="js/api.js"></script>
+<script src="js/map.js"></script>
+<script src="js/weather.js"></script>
+<script src="js/review.js"></script>
+<script src="js/share.js"></script>
+<script src="js/meetup.js"></script>
+<script src="js/community.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/premium.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+# ──────────────────────────────────────────────
+# TripMate — .gitignore
+# ──────────────────────────────────────────────
+
+# ── API Keys (절대 커밋 금지)
+js/config.local.js
+.env
+.env.*
+.env.local
+.env.development.local
+.env.production.local
+secrets.js
+
+# ── Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp
+.pnp.js
+package-lock.json
+
+# ── Build / Generated
+dist/
+build/
+.cache/
+*.log
+
+# ── SCSS 소스맵 (선택적 — 팀 상황에 따라 조정)
+css/*.css.map
+
+# ── OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ── Editor
+.vscode/settings.json
+.vscode/launch.json
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# ── Test / Coverage
+coverage/
+.nyc_output/
+
+# ── Temporary
+tmp/
+temp/
+*.tmp
+*.bak
+*.orig

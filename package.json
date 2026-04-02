@@ -1,0 +1,35 @@
+{
+  "name": "tripmate",
+  "version": "5.0.0",
+  "description": "AI 여행 루트 큐레이션 · 사진 · 모임 플랫폼",
+  "private": true,
+  "scripts": {
+    "sass": "sass scss/main.scss css/main.css --style=expanded --source-map",
+    "sass:watch": "sass scss/main.scss css/main.css --style=expanded --source-map --watch",
+    "sass:prod": "sass scss/main.scss css/main.css --style=compressed --no-source-map",
+    "build": "npm run sass:prod",
+    "start": "node server.js"
+  },
+  "devDependencies": {
+    "@types/jquery": "^4.0.0",
+    "sass": "^1.70.0"
+  },
+  "main": "server.js",
+  "dependencies": {
+    "chokidar": "^4.0.3",
+    "detect-libc": "^2.1.2",
+    "dotenv": "^17.4.0",
+    "express": "^5.2.1",
+    "immutable": "^5.1.5",
+    "is-extglob": "^2.1.1",
+    "is-glob": "^4.0.3",
+    "node-addon-api": "^7.1.1",
+    "node-fetch": "^3.3.2",
+    "picomatch": "^4.0.4",
+    "readdirp": "^4.1.2",
+    "source-map-js": "^1.2.1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
