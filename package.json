@@ -1,0 +1,16 @@
+{
+  "name": "tripmate",
+  "version": "5.0.0",
+  "description": "AI 여행 루트 큐레이션 · 사진 · 모임 플랫폼",
+  "private": true,
+  "scripts": {
+    "sass": "sass scss/main.scss css/main.css --style=expanded --source-map",
+    "sass:watch": "sass scss/main.scss css/main.css --style=expanded --source-map --watch",
+    "sass:prod": "sass scss/main.scss css/main.css --style=compressed --no-source-map",
+    "build": "npm run sass:prod"
+  },
+  "devDependencies": {
+    "@types/jquery": "^4.0.0",
+    "sass": "^1.70.0"
+  }
+}
